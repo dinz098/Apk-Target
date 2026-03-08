@@ -10,12 +10,22 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+
       - name: Extract Project
-        run: unzip Red-Eye-Mobile-main.zip && mv Red-Eye-Mobile-main/* . || true
+        run: |
+          unzip Red-Eye-Mobile-main.zip
+          cp -r Red-Eye-Mobile-main/* . || true
+          # Iki jimat ben file gradlew-ne ketemu senajan neng njero folder
+          find . -name "gradlew" -exec chmod +x {} +
+
       - name: Build with Gradle
-        run: chmod +x gradlew && ./gradlew assembleDebug
+        run: |
+          # Nggoleki path gradlew kanthi otomatis
+          GRADLEW_PATH=$(find . -name "gradlew" | head -n 1)
+          $GRADLEW_PATH assembleDebug
+
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: debug-apk
-          path: app/build/outputs/apk/debug/*.apk
+          path: "**/build/outputs/apk/debug/*.apk"
