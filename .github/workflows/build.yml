@@ -11,18 +11,18 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Extract and Repair Gradle
+      - name: Extract and Fix Structure
         run: |
           unzip Red-Eye-Mobile-main.zip
-          ROOT_DIR=$(find . -name "build.gradle" -printf '%h\n' | head -n 1)
-          cp -r $ROOT_DIR/* . || true
+          # Pindah kabeh isine folder proyek neng kene
+          cp -r Red-Eye-Mobile-main/* . || true
           
-          # IKI JIMATE: Nggawe Gradle Wrapper anyar ben ra error
-          gradle wrapper
+          # Nggawe bumbu Gradle Wrapper anyar sing komplit
+          gradle wrapper --gradle-version 8.2
           chmod +x gradlew
 
       - name: Build with Gradle
-        run: ./gradlew assembleDebug
+        run: ./gradlew assembleDebug --stacktrace
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
