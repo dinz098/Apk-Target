@@ -12,18 +12,21 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Extract and Downgrade Gradle
+      # IKI JALUR SING LUWIH AMAN: Nganggo Gradle versi 7.6 ben ra rewel
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: 7.6
+
+      - name: Extract and Prep
         run: |
           unzip Red-Eye-Mobile-main.zip
           cp -r Red-Eye-Mobile-main/* . || true
-          
-          # IKI JIMATE: Paksa nganggo Gradle 8.2 ben cocok karo kodingan lawas
-          gradle wrapper --gradle-version 8.2
           chmod +x gradlew
 
       - name: Build with Gradle
-        # Nganggo --no-daemon ben memori HP/server ora abot
-        run: ./gradlew assembleDebug --no-daemon
+        # Nganggo perintah 'gradle' langsung, ora usah './gradlew' nek wrapper-e rusak
+        run: gradle assembleDebug --stacktrace
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
