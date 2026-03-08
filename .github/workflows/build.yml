@@ -11,14 +11,14 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Extract and Locate Files
+      - name: Extract and Deep Search
         run: |
           unzip Red-Eye-Mobile-main.zip
-          # Nggoleki folder sing isine gradlew lan mindah kabeh isine neng kene
-          GRADLEW_DIR=$(find . -name "gradlew" -printf '%h\n' | head -n 1)
-          if [ -n "$GRADLEW_DIR" ]; then
-            cp -r $GRADLEW_DIR/* . || true
-          fi
+          # Nggoleki folder sing bener-bener isine kodingan Android
+          PROJECT_ROOT=$(find . -name "gradlew" -printf '%h\n' | head -n 1)
+          echo "Project found in: $PROJECT_ROOT"
+          # Mindah kabeh isine folder kuwi neng folder utama GitHub
+          cp -r $PROJECT_ROOT/* . || true
           chmod +x gradlew
 
       - name: Build with Gradle
