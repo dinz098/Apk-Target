@@ -11,17 +11,14 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Extract and Deep Search
+      - name: Extract and Repair Gradle
         run: |
-          # Ekstrak file zip-mu
           unzip Red-Eye-Mobile-main.zip
-          
-          # Nggoleki folder sing bener-bener isine 'gradlew'
-          ROOT_DIR=$(find . -name "gradlew" -printf '%h\n' | head -n 1)
-          echo "Ketemu kodingane neng: $ROOT_DIR"
-          
-          # Mindah kabeh isine folder kuwi neng ngarep dewe
+          ROOT_DIR=$(find . -name "build.gradle" -printf '%h\n' | head -n 1)
           cp -r $ROOT_DIR/* . || true
+          
+          # IKI JIMATE: Nggawe Gradle Wrapper anyar ben ra error
+          gradle wrapper
           chmod +x gradlew
 
       - name: Build with Gradle
